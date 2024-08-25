@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2C9C08E5-D7E1-43FB-8292-274C0BA1220F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>MiniApi</RootNamespace>
+    <AssemblyName>MiniApi</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="src\Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\App_Start\CorsConfig.cs" />
+    <EmbeddedResource Include="src\App_Start\FormatterConfig.cs" />
+    <EmbeddedResource Include="src\App_Start\NLogConfig.cs" />
+    <EmbeddedResource Include="src\App_Start\SwaggerConfig.cs" />
+    <EmbeddedResource Include="src\App_Start\WebApiConfig.cs" />
+    <EmbeddedResource Include="src\Controllers\CountController.cs" />
+    <EmbeddedResource Include="src\Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="src\Utils\ExceptionExtensions.cs" />
+    <EmbeddedResource Include="src\Models\HttpResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="src\NLog.config" />
+    <EmbeddedResource Include="src\packages.config" />
+    <EmbeddedResource Include="src\Properties\PublishProfiles\FolderProfile.pubxml" />
+    <EmbeddedResource Include="src\Web.config" />
+    <EmbeddedResource Include="src\Web.Debug.config" />
+    <EmbeddedResource Include="src\Web.Release.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="src\Global.asax" />
+    <EmbeddedResource Include="src\MiniApi.csproj" />
+    <EmbeddedResource Include="src\MiniApi.csproj.user" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
