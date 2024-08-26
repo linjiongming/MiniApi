@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="src\Models\SampleModel.cs" />
     <EmbeddedResource Include="src\Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </EmbeddedResource>
@@ -52,10 +53,10 @@
     <EmbeddedResource Include="src\App_Start\NLogConfig.cs" />
     <EmbeddedResource Include="src\App_Start\SwaggerConfig.cs" />
     <EmbeddedResource Include="src\App_Start\WebApiConfig.cs" />
-    <EmbeddedResource Include="src\Controllers\CountController.cs" />
+    <EmbeddedResource Include="src\Controllers\SampleController.cs" />
     <EmbeddedResource Include="src\Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="src\Utils\ExceptionExtensions.cs" />
-    <EmbeddedResource Include="src\Models\HttpResult.cs" />
+    <EmbeddedResource Include="src\Models\System.Net.Http\HttpResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="src\NLog.config" />

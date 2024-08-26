@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -11,7 +12,14 @@ namespace MiniApi
 {
     class Program
     {
-        static readonly string[] _multiExtFiles = new string[] { "Global.asax.cs", "MiniApi.csproj.user", "Web.Debug.config", "Web.Release.config" };
+        static readonly Dictionary<string, string> _specialPaths = new Dictionary<string, string>
+        {
+            ["System.Net.Http.HttpResult.cs"] = @"System.Net.Http\HttpResult.cs",
+            ["MiniApi.csproj.user"] = "MiniApi.csproj.user",
+            ["Global.asax.cs"] = "Global.asax.cs",
+            ["Web.Debug.config"] = "Web.Debug.config",
+            ["Web.Release.config"] = "Web.Release.config",
+        };
 
         static int Main(string[] args)
         {
@@ -61,18 +69,19 @@ namespace MiniApi
                 {
                     if (!resourceName.StartsWith(resourcePrefix)) continue;
                     string srcName = resourceName.Substring(resourcePrefix.Length);
-                    string[] array = srcName.Split('.');
+                    string[] srcNameParts = srcName.Split('.');
                     string folder, filename;
-                    if (_multiExtFiles.Contains(srcName))
+                    if (_specialPaths.ContainsKey(srcName))
                     {
-                        folder = string.Empty;
-                        filename = srcName;
+                        var pathParts = _specialPaths[srcName].Split('\\');
+                        folder = pathParts.Length > 1 ? string.Join("\\", pathParts.Take(pathParts.Length - 1)) : string.Empty;
+                        filename = pathParts.Last();
                     }
-                    else if (array.Length > 2)
+                    else if (srcNameParts.Length > 2)
                     {
-                        int folderDeep = array.Length - 2;
-                        folder = string.Join("\\", array.Take(folderDeep));
-                        filename = string.Join(".", array.Skip(folderDeep));
+                        int folderDeep = srcNameParts.Length - 2;
+                        folder = string.Join("\\", srcNameParts.Take(folderDeep));
+                        filename = string.Join(".", srcNameParts.Skip(folderDeep));
                     }
                     else
                     {
