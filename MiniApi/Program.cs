@@ -11,7 +11,7 @@ namespace MiniApi
 {
     class Program
     {
-        static readonly string[] _multiExtFiles = new string[] { "Global.asax.cs", "MiniApi.csproj.user" };
+        static readonly string[] _multiExtFiles = new string[] { "Global.asax.cs", "MiniApi.csproj.user", "Web.Debug.config", "Web.Release.config" };
 
         static int Main(string[] args)
         {
