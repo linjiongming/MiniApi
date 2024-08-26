@@ -4,6 +4,7 @@
 # User-specific files
 *.suo
 *.user
+!MiniApi/src/MiniApi.csproj.user
 *.userosscache
 *.sln.docstates
 
