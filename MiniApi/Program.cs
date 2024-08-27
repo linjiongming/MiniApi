@@ -14,7 +14,7 @@ namespace MiniApi
     {
         static readonly Dictionary<string, string> _specialPaths = new Dictionary<string, string>
         {
-            ["System.Net.Http.HttpResult.cs"] = @"System.Net.Http\HttpResult.cs",
+            ["Models.System.Net.Http.HttpResult.cs"] = @"Models\System.Net.Http\HttpResult.cs",
             ["MiniApi.csproj.user"] = "MiniApi.csproj.user",
             ["Global.asax.cs"] = "Global.asax.cs",
             ["Web.Debug.config"] = "Web.Debug.config",
@@ -73,9 +73,8 @@ namespace MiniApi
                     string folder, filename;
                     if (_specialPaths.ContainsKey(srcName))
                     {
-                        var pathParts = _specialPaths[srcName].Split('\\');
-                        folder = pathParts.Length > 1 ? string.Join("\\", pathParts.Take(pathParts.Length - 1)) : string.Empty;
-                        filename = pathParts.Last();
+                        folder = Path.GetDirectoryName(_specialPaths[srcName]);
+                        filename = Path.GetFileName(_specialPaths[srcName]);
                     }
                     else if (srcNameParts.Length > 2)
                     {
