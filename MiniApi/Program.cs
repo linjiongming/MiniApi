@@ -14,11 +14,10 @@ namespace MiniApi
     {
         static readonly Dictionary<string, string> _specialPaths = new Dictionary<string, string>
         {
-            ["Models.System.Net.Http.HttpResult.cs"] = @"Models\System.Net.Http\HttpResult.cs",
-            ["MiniApi.csproj.user"] = "MiniApi.csproj.user",
-            ["Global.asax.cs"] = "Global.asax.cs",
-            ["Web.Debug.config"] = "Web.Debug.config",
-            ["Web.Release.config"] = "Web.Release.config",
+            ["WebAppService.Designer.cs"] = "WebAppService.Designer.cs",
+            ["Utils.System.Web.Http.LogTraceConfig.cs"] = @"Utils\System.Web.Http\LogTraceConfig.cs",
+            ["Utils.System.Net.Http.HttpResult.cs"] = @"Utils\System.Net.Http\HttpResult.cs",
+            ["Utils.System.Net.Http.HttpExtensions.cs"] = @"Utils\System.Net.Http\HttpExtensions.cs",
         };
 
         static int Main(string[] args)

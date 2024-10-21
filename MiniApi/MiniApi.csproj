@@ -44,33 +44,20 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="src\Models\SampleModel.cs" />
-    <EmbeddedResource Include="src\Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="src\App_Start\CorsConfig.cs" />
-    <EmbeddedResource Include="src\App_Start\FormatterConfig.cs" />
-    <EmbeddedResource Include="src\App_Start\NLogConfig.cs" />
-    <EmbeddedResource Include="src\App_Start\SwaggerConfig.cs" />
-    <EmbeddedResource Include="src\App_Start\WebApiConfig.cs" />
-    <EmbeddedResource Include="src\Controllers\SampleController.cs" />
-    <EmbeddedResource Include="src\Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="src\Utils\ExceptionExtensions.cs" />
-    <EmbeddedResource Include="src\Models\System.Net.Http\HttpResult.cs" />
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="src\App_Start\Startup.cs" />
+    <EmbeddedResource Include="src\App.config" />
+    <EmbeddedResource Include="src\Controllers\TestController.cs" />
+    <EmbeddedResource Include="src\MiniApi.csproj" />
     <EmbeddedResource Include="src\NLog.config" />
     <EmbeddedResource Include="src\packages.config" />
-    <EmbeddedResource Include="src\Properties\PublishProfiles\FolderProfile.pubxml" />
-    <EmbeddedResource Include="src\Web.config" />
-    <EmbeddedResource Include="src\Web.Debug.config" />
-    <EmbeddedResource Include="src\Web.Release.config" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <EmbeddedResource Include="src\Global.asax" />
-    <EmbeddedResource Include="src\MiniApi.csproj" />
-    <EmbeddedResource Include="src\MiniApi.csproj.user" />
+    <EmbeddedResource Include="src\Program.cs" />
+    <EmbeddedResource Include="src\Properties\app.manifest" />
+    <EmbeddedResource Include="src\Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="src\Utils\System.Net.Http\HttpExtensions.cs" />
+    <EmbeddedResource Include="src\Utils\System.Net.Http\HttpResult.cs" />
+    <EmbeddedResource Include="src\Utils\System.Web.Http\LogTraceConfig.cs" />
+    <EmbeddedResource Include="src\WebAppService.cs" />
+    <EmbeddedResource Include="src\WebAppService.Designer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

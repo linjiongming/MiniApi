@@ -1,10 +1,6 @@
 ﻿using Newtonsoft.Json;
-using NLog;
-using System;
 using System.Data.Linq;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Authentication;
@@ -12,20 +8,19 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Filters;
 
-namespace MiniApi
+namespace System.Web.Http
 {
-    public class NLogConfig
+    public class LogTraceConfig
     {
+        private static HttpConfiguration _config;
+
         public static void Configure(HttpConfiguration config)
         {
-            LogManager.AutoShutdown = true;
-            Trace.Listeners.Add(new NLogTraceListener());
+            _config = config;
             config.Filters.Add(new LoggerActionFilterAttribute());
             config.Filters.Add(new LoggerExceptionFilterAttribute());
             config.Services.Replace(typeof(IExceptionLogger), new ExceptionLogger());
@@ -36,16 +31,8 @@ namespace MiniApi
             public override async Task OnActionExecutingAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
             {
                 var request = actionContext.Request;
-                var url = request.RequestUri.PathAndQuery;
 
-                var message = $"[{request.Method}] {url} IN";
-
-                if (IsStringContent(request.Content))
-                {
-                    message += " " + await ReadContentAsStringAsync(request);
-                }
-
-                message += Environment.NewLine + string.Join(Environment.NewLine, request.Headers.Select(x => $"{x.Key}:{string.Join(",", x.Value)}"));
+                var message = await request.GetLogMessageAsync();
 
                 Trace.TraceInformation(message);
 
@@ -59,39 +46,12 @@ namespace MiniApi
                 if (response == null) return;
 
                 var request = actionExecutedContext.Request;
-                var url = request.RequestUri.PathAndQuery;
 
-                var message = $"{request.Method}] {url} OUT";
-
-                if (IsStringContent(response.Content))
-                {
-                    message += " " + await response.Content.ReadAsStringAsync();
-                }
-
-                message += Environment.NewLine + string.Join(Environment.NewLine, response.Headers.Select(x => $"{x.Key}:{string.Join(",", x.Value)}"));
+                var message = await response.GetLogMessageAsync();
 
                 Trace.TraceInformation(message);
 
                 await base.OnActionExecutedAsync(actionExecutedContext, cancellationToken);
-            }
-
-            private bool IsStringContent(HttpContent content)
-            {
-                return content.Headers.ContentLength > 0 &&
-                    (content.Headers.ContentType.MediaType.Equals("application/json", StringComparison.OrdinalIgnoreCase) ||
-                    content.Headers.ContentType.MediaType.StartsWith("text", StringComparison.OrdinalIgnoreCase));
-            }
-
-            private async Task<string> ReadContentAsStringAsync(HttpRequestMessage request)
-            {
-                var stream = new MemoryStream();
-                {
-                    var context = (HttpContextBase)request.Properties["MS_HttpContext"];
-                    context.Request.InputStream.Seek(0, SeekOrigin.Begin);
-                    await context.Request.InputStream.CopyToAsync(stream);
-                    string requestBody = Encoding.UTF8.GetString(stream.ToArray());
-                    return requestBody;
-                }
             }
         }
 
@@ -134,7 +94,7 @@ namespace MiniApi
 
                 var result = new HttpResult(statusCode, ex.Message, statusCode != HttpStatusCode.InternalServerError && ex.Data.Count > 0 ? ex.Data : null);
 
-                var json = JsonConvert.SerializeObject(result, GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings);
+                var json = JsonConvert.SerializeObject(result, _config.Formatters.JsonFormatter.SerializerSettings);
 
                 actionExecutedContext.Response.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
