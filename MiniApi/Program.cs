@@ -10,6 +10,8 @@ namespace MiniApi
 {
     class Program
     {
+        static Random random = new Random();
+        static List<int> usedPorts = new List<int>();
         static readonly Dictionary<string, string> _specialPaths = new Dictionary<string, string>
         {
             ["WebAppService.Designer.cs"] = "WebAppService.Designer.cs",
@@ -75,7 +77,6 @@ namespace MiniApi
                         Console.WriteLine("Release file: " + path);
                     }
                 }
-
                 Console.WriteLine("Done");
                 return 0;
             }
@@ -106,19 +107,20 @@ namespace MiniApi
             return projectName;
         }
 
-        static Random random = new Random();
-        static IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
-        static List<int> usedPorts = ipProperties
-            .GetActiveTcpConnections()
-            .Where(connection => connection.State != TcpState.Closed)
-            .Select(connection => connection.LocalEndPoint)
-            .Concat(ipProperties.GetActiveTcpListeners())
-            .Concat(ipProperties.GetActiveUdpListeners())
-            .Select(endpoint => endpoint.Port)
-            .ToList();
-
         static int NextFreePort(int min, int max)
         {
+            if (usedPorts.Count == 0)
+            {
+                IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
+                usedPorts = ipProperties
+                    .GetActiveTcpConnections()
+                    .Where(connection => connection.State != TcpState.Closed)
+                    .Select(connection => connection.LocalEndPoint)
+                    .Concat(ipProperties.GetActiveTcpListeners())
+                    .Concat(ipProperties.GetActiveUdpListeners())
+                    .Select(endpoint => endpoint.Port)
+                    .ToList();
+            }
             int port;
             do
             {
