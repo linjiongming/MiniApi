@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Text;
 
@@ -21,32 +22,13 @@ namespace MiniApi
         {
             try
             {
-                string projectName;
-                if (args.Length < 1)
-                {
-                    Console.WriteLine("Please input project name:");
-                    projectName = Console.ReadLine();
-                }
-                else
-                {
-                    projectName = args[0];
-                }
-                if (string.IsNullOrWhiteSpace(projectName))
-                {
-                    throw new Exception("Project name cannot be empty");
-                }
-                projectName = projectName.Replace(" ", "_");
-
+                string projectName = GetProjectName(args);
                 Guid projectGuid = Guid.NewGuid();
-
-                int freePort = FreePorts.Next(8000, 9000);
-
+                int freePort = NextFreePort(8000, 9000);
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 string assemblyName = assembly.GetName().Name;
                 string resourcePrefix = $"{assemblyName}.src.";
-
                 string baseDirectory = Path.Combine(Directory.GetCurrentDirectory(), projectName);
-
                 foreach (string resourceName in assembly.GetManifestResourceNames())
                 {
                     if (!resourceName.StartsWith(resourcePrefix)) continue;
@@ -102,6 +84,49 @@ namespace MiniApi
                 Console.WriteLine(ex.Message);
                 return 1;
             }
+        }
+
+        static string GetProjectName(string[] args)
+        {
+            string projectName;
+            if (args.Length < 1)
+            {
+                Console.WriteLine("Please input project name:");
+                projectName = Console.ReadLine();
+            }
+            else
+            {
+                projectName = args[0];
+            }
+            if (string.IsNullOrWhiteSpace(projectName))
+            {
+                throw new Exception("Project name cannot be empty");
+            }
+            projectName = projectName.Replace(" ", "_");
+            return projectName;
+        }
+
+        static Random random = new Random();
+        static IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
+        static List<int> usedPorts = ipProperties
+            .GetActiveTcpConnections()
+            .Where(connection => connection.State != TcpState.Closed)
+            .Select(connection => connection.LocalEndPoint)
+            .Concat(ipProperties.GetActiveTcpListeners())
+            .Concat(ipProperties.GetActiveUdpListeners())
+            .Select(endpoint => endpoint.Port)
+            .ToList();
+
+        static int NextFreePort(int min, int max)
+        {
+            int port;
+            do
+            {
+                port = random.Next(8000, 9000);
+            }
+            while (usedPorts.Contains(port));
+            usedPorts.Add(port);
+            return port;
         }
     }
 }
