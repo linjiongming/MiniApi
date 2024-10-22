@@ -57,7 +57,7 @@ namespace System.Net.Http
         {
             var request = response.RequestMessage;
 
-            var message = $"{request.Method}] {request.RequestUri.PathAndQuery} OUT "
+            var message = $"[{request.Method}] {request.RequestUri.PathAndQuery} OUT "
                 + string.Join(Environment.NewLine, response.GetSpecialHeaders().Select(x => $"{x.Key}:{string.Join(",", x.Value)}"));
 
             if (response.Content.IsStringContent())

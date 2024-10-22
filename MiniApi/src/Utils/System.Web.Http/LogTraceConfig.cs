@@ -98,7 +98,7 @@ namespace System.Web.Http
 
                 actionExecutedContext.Response.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var message = $"{request.Method}] {url} OUT " + json;
+                var message = $"【{request.Method}] {url} OUT " + json;
 
                 Trace.TraceInformation(message);
             }
