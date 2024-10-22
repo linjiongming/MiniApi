@@ -42,7 +42,6 @@ namespace MiniApi
 
                 Guid projectGuid = Guid.NewGuid();
 
-                int iisPort, devPort;
                 IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
                 int[] usedPorts = ipProperties
                     .GetActiveTcpConnections()
@@ -53,10 +52,9 @@ namespace MiniApi
                     .Select(endpoint => endpoint.Port)
                     .ToArray();
                 Random random = new Random();
-                do iisPort = random.Next(50000, 60000);
-                while (usedPorts.Contains(iisPort));
-                do devPort = random.Next(50000, 60000);
-                while (usedPorts.Contains(devPort) && devPort != iisPort);
+                int freePort;
+                do freePort = random.Next(8000, 9000);
+                while (usedPorts.Contains(freePort));
 
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 string assemblyName = assembly.GetName().Name;
@@ -96,8 +94,10 @@ namespace MiniApi
                         if (filename == projectName + ".csproj")
                         {
                             content = content.Replace("{ProjectGuid}", projectGuid.ToString().ToUpper());
-                            content = content.Replace("{DevPort}", devPort.ToString());
-                            content = content.Replace("{IISPort}", iisPort.ToString());
+                        }
+                        else if(filename == "App.config")
+                        {
+                            content = content.Replace("{HostingPort}", freePort.ToString());
                         }
                         else if (filename == "AssemblyInfo.cs")
                         {
