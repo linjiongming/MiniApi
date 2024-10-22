@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 
@@ -42,19 +39,7 @@ namespace MiniApi
 
                 Guid projectGuid = Guid.NewGuid();
 
-                IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
-                int[] usedPorts = ipProperties
-                    .GetActiveTcpConnections()
-                    .Where(connection => connection.State != TcpState.Closed)
-                    .Select(connection => connection.LocalEndPoint)
-                    .Concat(ipProperties.GetActiveTcpListeners())
-                    .Concat(ipProperties.GetActiveUdpListeners())
-                    .Select(endpoint => endpoint.Port)
-                    .ToArray();
-                Random random = new Random();
-                int freePort;
-                do freePort = random.Next(8000, 9000);
-                while (usedPorts.Contains(freePort));
+                int freePort = FreePorts.Next(8000, 9000);
 
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 string assemblyName = assembly.GetName().Name;
@@ -95,7 +80,7 @@ namespace MiniApi
                         {
                             content = content.Replace("{ProjectGuid}", projectGuid.ToString().ToUpper());
                         }
-                        else if(filename == "App.config")
+                        else if (filename == "App.config")
                         {
                             content = content.Replace("{HostingPort}", freePort.ToString());
                         }
