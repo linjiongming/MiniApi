@@ -10,8 +10,8 @@ namespace MiniApi
 {
     class Program
     {
-        static Random random = new Random();
-        static List<int> usedPorts = new List<int>();
+        static readonly Random _random = new Random();
+        static readonly List<int> _usedPorts = new List<int>();
         static readonly Dictionary<string, string> _specialPaths = new Dictionary<string, string>
         {
             ["WebAppService.Designer.cs"] = "WebAppService.Designer.cs",
@@ -109,25 +109,24 @@ namespace MiniApi
 
         static int NextFreePort(int min, int max)
         {
-            if (usedPorts.Count == 0)
+            if (_usedPorts.Count == 0)
             {
                 IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
-                usedPorts = ipProperties
+                _usedPorts.AddRange(ipProperties
                     .GetActiveTcpConnections()
                     .Where(connection => connection.State != TcpState.Closed)
                     .Select(connection => connection.LocalEndPoint)
                     .Concat(ipProperties.GetActiveTcpListeners())
                     .Concat(ipProperties.GetActiveUdpListeners())
-                    .Select(endpoint => endpoint.Port)
-                    .ToList();
+                    .Select(endpoint => endpoint.Port));
             }
             int port;
             do
             {
-                port = random.Next(8000, 9000);
+                port = _random.Next(8000, 9000);
             }
-            while (usedPorts.Contains(port));
-            usedPorts.Add(port);
+            while (_usedPorts.Contains(port));
+            _usedPorts.Add(port);
             return port;
         }
     }
