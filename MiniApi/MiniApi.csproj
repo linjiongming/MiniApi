@@ -45,7 +45,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="src\App_Start\Startup.cs" />
-    <EmbeddedResource Include="src\App.config" />
+    <EmbeddedResource Include="src\App.config">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="src\Controllers\TestController.cs" />
     <EmbeddedResource Include="src\MiniApi.csproj" />
     <EmbeddedResource Include="src\NLog.config" />
