@@ -5,7 +5,7 @@ namespace System.Net.Http
 
     public class HttpResult
     {
-        const int HttpStatusCode_MultiStatus = 207;
+        const int HttpStatusCode_MultiStatus = 1207;
 
         public int Code { get; set; }
 
@@ -16,7 +16,7 @@ namespace System.Net.Http
         public HttpResult(int code, string msg = null, object data = null)
         {
             Code = code;
-            Msg = msg ?? ((HttpStatusCode)(code > 1000 ? code - 1000 : code)).ToString();
+            Msg = msg ?? (code == HttpStatusCode_MultiStatus ? "MultiStatus" : ((HttpStatusCode)(code > 1000 ? code - 1000 : code)).ToString());
             Data = data;
         }
 
