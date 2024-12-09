@@ -15,9 +15,12 @@ namespace MiniApi
         static readonly Dictionary<string, string> _specialPaths = new Dictionary<string, string>
         {
             ["WebAppService.Designer.cs"] = "WebAppService.Designer.cs",
-            ["Utils.System.Web.Http.LogTraceConfig.cs"] = @"Utils\System.Web.Http\LogTraceConfig.cs",
-            ["Utils.System.Net.Http.HttpResult.cs"] = @"Utils\System.Net.Http\HttpResult.cs",
+            ["Utils.System.IdentityModel.Tokens.Jwt.JwtAuthProvider.cs"] = @"Utils\System.IdentityModel.Tokens.Jwt\JwtAuthProvider.cs",
             ["Utils.System.Net.Http.HttpExtensions.cs"] = @"Utils\System.Net.Http\HttpExtensions.cs",
+            ["Utils.System.Net.Http.HttpResult.cs"] = @"Utils\System.Net.Http\HttpResult.cs",
+            ["Utils.System.Web.Http.AuthAttribute.cs"] = @"Utils\System.Web.Http\AuthAttribute.cs",
+            ["Utils.System.Web.Http.Extensions.cs"] = @"Utils\System.Web.Http\Extensions.cs",
+            ["Utils.System.Web.Http.LogTraceConfig.cs"] = @"Utils\System.Web.Http\LogTraceConfig.cs",
         };
 
         static int Main(string[] args)
@@ -27,6 +30,7 @@ namespace MiniApi
                 string projectName = GetProjectName(args);
                 Guid projectGuid = Guid.NewGuid();
                 int freePort = NextFreePort(8000, 9000);
+                string jwtKey = RandomBase64(32);
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 string assemblyName = assembly.GetName().Name;
                 string resourcePrefix = $"{assemblyName}.src.";
@@ -67,6 +71,7 @@ namespace MiniApi
                         else if (filename == "App.config")
                         {
                             content = content.Replace("{HostingPort}", freePort.ToString());
+                            content = content.Replace("{JwtKey}", jwtKey);
                         }
                         else if (filename == "AssemblyInfo.cs")
                         {
@@ -128,6 +133,13 @@ namespace MiniApi
             while (_usedPorts.Contains(port));
             _usedPorts.Add(port);
             return port;
+        }
+
+        static string RandomBase64(int length)
+        {
+            byte[] bytes = new byte[length];
+            _random.NextBytes(bytes);
+            return Convert.ToBase64String(bytes);
         }
     }
 }

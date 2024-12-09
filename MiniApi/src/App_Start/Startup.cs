@@ -1,8 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Owin;
 using Swashbuckle.Application;
 using System;
+using System.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
@@ -57,11 +60,23 @@ namespace MiniApi
                     });
                     var commentsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyName + ".XML");
                     c.IncludeXmlComments(commentsFile);
+                    c.ApiKey("token").In("header").Description("JWT Token");
                 })
-                .EnableSwaggerUi();
+                .EnableSwaggerUi(c =>
+                {
+                    c.EnableApiKeySupport("token", "header");
+                });
 
             // logging
             LogTraceConfig.Configure(config);
+
+            // authorize
+            config.Services.SetService<IAuthProvider>(new JwtAuthProvider(
+                    Convert.FromBase64String(ConfigurationManager.AppSettings.Get("JwtKey") ?? throw new ArgumentNullException("JwtKey")),
+                    ConfigurationManager.AppSettings.Get("JwtAlgorithm"),
+                    ConfigurationManager.AppSettings.Get("JwtIssuer"),
+                    ConfigurationManager.AppSettings.Get("JwtAudience"),
+                    ConfigurationManager.AppSettings.Get("JwtDuration")));
 
             app.UseWebApi(config);
         }
