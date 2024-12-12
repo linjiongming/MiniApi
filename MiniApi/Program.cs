@@ -14,13 +14,15 @@ namespace MiniApi
         static readonly List<int> _usedPorts = new List<int>();
         static readonly Dictionary<string, string> _specialPaths = new Dictionary<string, string>
         {
-            ["WebAppService.Designer.cs"] = "WebAppService.Designer.cs",
-            ["Utils.System.IdentityModel.Tokens.Jwt.JwtAuthProvider.cs"] = @"Utils\System.IdentityModel.Tokens.Jwt\JwtAuthProvider.cs",
+            ["Utils.Microsoft.IdentityModel.Tokens.ITokenProvider.cs"] = @"Utils\Microsoft.IdentityModel.Tokens\ITokenProvider.cs",
+            ["Utils.Microsoft.IdentityModel.Tokens.TokenInfo.cs"] = @"Utils\Microsoft.IdentityModel.Tokens\TokenInfo.cs",
+            ["Utils.System.IdentityModel.Tokens.Jwt.JwtProvider.cs"] = @"Utils\System.IdentityModel.Tokens.Jwt\JwtProvider.cs",
             ["Utils.System.Net.Http.HttpExtensions.cs"] = @"Utils\System.Net.Http\HttpExtensions.cs",
             ["Utils.System.Net.Http.HttpResult.cs"] = @"Utils\System.Net.Http\HttpResult.cs",
             ["Utils.System.Web.Http.AuthAttribute.cs"] = @"Utils\System.Web.Http\AuthAttribute.cs",
             ["Utils.System.Web.Http.Extensions.cs"] = @"Utils\System.Web.Http\Extensions.cs",
-            ["Utils.System.Web.Http.LogTraceConfig.cs"] = @"Utils\System.Web.Http\LogTraceConfig.cs",
+            ["Utils.System.Web.Http.LoggerConfig.cs"] = @"Utils\System.Web.Http\LoggerConfig.cs",
+            ["WebAppService.Designer.cs"] = "WebAppService.Designer.cs",
         };
 
         static int Main(string[] args)

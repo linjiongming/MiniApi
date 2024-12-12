@@ -67,16 +67,16 @@ namespace MiniApi
                     c.EnableApiKeySupport("token", "header");
                 });
 
-            // logging
-            LogTraceConfig.Configure(config);
+            // logger
+            LoggerConfig.Configure(config);
 
             // authorize
-            config.Services.SetService<IAuthProvider>(new JwtAuthProvider(
-                    Convert.FromBase64String(ConfigurationManager.AppSettings.Get("JwtKey") ?? throw new ArgumentNullException("JwtKey")),
-                    ConfigurationManager.AppSettings.Get("JwtAlgorithm"),
-                    ConfigurationManager.AppSettings.Get("JwtIssuer"),
-                    ConfigurationManager.AppSettings.Get("JwtAudience"),
-                    ConfigurationManager.AppSettings.Get("JwtDuration")));
+            config.Services.SetService<ITokenProvider>(new JwtProvider(
+                    Convert.FromBase64String(ConfigurationManager.AppSettings.Get("JWT:Key") ?? throw new ArgumentNullException("JWT:Key")),
+                    ConfigurationManager.AppSettings.Get("JWT:Algorithm"),
+                    ConfigurationManager.AppSettings.Get("JWT:Issuer"),
+                    ConfigurationManager.AppSettings.Get("JWT:Audience"),
+                    ConfigurationManager.AppSettings.Get("JWT:Duration")));
 
             app.UseWebApi(config);
         }

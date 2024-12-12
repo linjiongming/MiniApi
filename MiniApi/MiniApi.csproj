@@ -44,7 +44,9 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="src\Utils\System.IdentityModel.Tokens.Jwt\JwtAuthProvider.cs" />
+    <EmbeddedResource Include="src\Utils\Microsoft.IdentityModel.Tokens\ITokenProvider.cs" />
+    <EmbeddedResource Include="src\Utils\Microsoft.IdentityModel.Tokens\TokenInfo.cs" />
+    <EmbeddedResource Include="src\Utils\System.IdentityModel.Tokens.Jwt\JwtProvider.cs" />
     <EmbeddedResource Include="src\Utils\System.Web.Http\AuthAttribute.cs" />
     <EmbeddedResource Include="src\Utils\System.Web.Http\Extensions.cs" />
     <EmbeddedResource Include="src\App_Start\Startup.cs" />
@@ -60,7 +62,7 @@
     <EmbeddedResource Include="src\Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="src\Utils\System.Net.Http\HttpExtensions.cs" />
     <EmbeddedResource Include="src\Utils\System.Net.Http\HttpResult.cs" />
-    <EmbeddedResource Include="src\Utils\System.Web.Http\LogTraceConfig.cs" />
+    <EmbeddedResource Include="src\Utils\System.Web.Http\LoggerConfig.cs" />
     <EmbeddedResource Include="src\WebAppService.cs" />
     <EmbeddedResource Include="src\WebAppService.Designer.cs" />
   </ItemGroup>

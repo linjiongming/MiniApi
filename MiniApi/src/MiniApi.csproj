@@ -136,9 +136,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Utils\System.IdentityModel.Tokens.Jwt\JwtAuthProvider.cs" />
+    <Compile Include="Utils\Microsoft.IdentityModel.Tokens\TokenInfo.cs" />
+    <Compile Include="Utils\System.IdentityModel.Tokens.Jwt\JwtProvider.cs" />
     <Compile Include="Utils\System.Web.Http\Extensions.cs" />
-    <Compile Include="Utils\System.Web.Http\LogTraceConfig.cs" />
+    <Compile Include="Utils\Microsoft.IdentityModel.Tokens\ITokenProvider.cs" />
+    <Compile Include="Utils\System.Web.Http\LoggerConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Utils\System.Web.Http\AuthAttribute.cs" />
     <Compile Include="WebAppService.cs">

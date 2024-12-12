@@ -14,7 +14,7 @@ using System.Web.Http.Filters;
 
 namespace System.Web.Http
 {
-    public class LogTraceConfig
+    public class LoggerConfig
     {
         private static HttpConfiguration _config;
 

@@ -1,5 +1,5 @@
-﻿using System.Net.Http;
-using System.Security.Claims;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace MiniApi.Controllers
@@ -13,10 +13,10 @@ namespace MiniApi.Controllers
         {
             if (username == "admin" && password == "123")
             {
-                if (RequestContext.Configuration.Services.GetService(typeof(IAuthProvider)) is IAuthProvider authProvider)
+                if (RequestContext.Configuration.Services.GetService(typeof(ITokenProvider)) is ITokenProvider tokenProvider)
                 {
-                    string token = authProvider.Authorize(new Claim(ClaimTypes.Name, username));
-                    return HttpResult.OK(token);
+                    TokenInfo tokenInfo = tokenProvider.Create("1", username);
+                    return HttpResult.OK(tokenInfo);
                 }
             }
             return HttpResult.Unauthorized();
