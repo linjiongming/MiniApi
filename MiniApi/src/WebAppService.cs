@@ -17,9 +17,9 @@ namespace MiniApi
 
         public WebAppService()
         {
-            var url = ConfigurationManager.AppSettings.Get("Hosting.Url");
+            var url = ConfigurationManager.AppSettings.Get("Hosting:Url");
             Uri = new Uri(url.Replace("+", "0.0.0.0").Replace("*", "0.0.0.0"));
-            CertHash = ConfigurationManager.AppSettings.Get("Hosting.CertHash");
+            CertHash = ConfigurationManager.AppSettings.Get("Hosting:CertHash");
             InitializeComponent();
         }
 
@@ -30,7 +30,7 @@ namespace MiniApi
             {
                 if (string.IsNullOrWhiteSpace(CertHash))
                 {
-                    throw new ArgumentNullException("Hosting.CertHash");
+                    throw new ArgumentNullException("Hosting:CertHash");
                 }
                 RegisterSslOnPortIfNotRegistered(Uri.Port, CertHash);
             }
