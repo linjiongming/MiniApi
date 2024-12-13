@@ -5,7 +5,7 @@ namespace Microsoft.IdentityModel.Tokens
 {
     public interface ITokenProvider
     {
-        TokenInfo Create(string userid, string username, params Claim[] claims);
+        TokenInfo Create(string username, params Claim[] claims);
         IPrincipal Validate(string token);
     }
 }

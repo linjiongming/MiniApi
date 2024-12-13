@@ -23,14 +23,14 @@ namespace System.IdentityModel.Tokens.Jwt
             _handler = new JwtSecurityTokenHandler();
         }
 
-        public TokenInfo Create(string userid, string username, params Claim[] claims)
+        public TokenInfo Create(string username, params Claim[] claims)
         {
             DateTime now = DateTime.Now;
             DateTime notBefore = now.AddMinutes(-30);
             DateTime expires = now.Add(_duration);
             Claim jti = new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N"));
             Claim iat = new Claim(JwtRegisteredClaimNames.Iat, EpochTime.GetIntDate(now.ToUniversalTime()).ToString());
-            Claim sub = new Claim(JwtRegisteredClaimNames.Sub, userid);
+            Claim sub = new Claim(JwtRegisteredClaimNames.Sub, username);
             Claim name = new Claim(JwtRegisteredClaimNames.UniqueName, username);
             JwtSecurityToken token = new JwtSecurityToken(_issuer, _audience, claims.Concat(new[] { jti, iat, sub, name }), notBefore, expires, _credentials);
             return new TokenInfo(token, _handler);

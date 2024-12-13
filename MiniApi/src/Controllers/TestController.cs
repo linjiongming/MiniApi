@@ -15,7 +15,7 @@ namespace MiniApi.Controllers
             {
                 if (RequestContext.Configuration.Services.GetService(typeof(ITokenProvider)) is ITokenProvider tokenProvider)
                 {
-                    TokenInfo tokenInfo = tokenProvider.Create("1", username);
+                    TokenInfo tokenInfo = tokenProvider.Create(username);
                     return HttpResult.OK(tokenInfo);
                 }
             }
