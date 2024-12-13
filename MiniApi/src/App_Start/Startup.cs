@@ -60,7 +60,7 @@ namespace MiniApi
                     });
                     var commentsFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, assemblyName + ".XML");
                     c.IncludeXmlComments(commentsFile);
-                    c.ApiKey("token").In("header").Description("Json Web Token");
+                    c.ApiKey("token").In("header").Description("JSON Web Tokens");
                 })
                 .EnableSwaggerUi(c =>
                 {
