@@ -38,16 +38,8 @@ Done
 #### Example
 ```powershell
 dotnet new sln -n Test
-```
-```powershell
 miniapi TestApi
-```
-```powershell
 dotnet sln add TestApi\TestApi.csproj
-```
-```powershell
 nuget restore
-```
-```powershell
 msbuild
 ```
