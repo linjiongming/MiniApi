@@ -15,16 +15,9 @@ namespace System.Net.Http
                 content.Headers.ContentType.MediaType.StartsWith("text", StringComparison.OrdinalIgnoreCase));
         }
 
-        public static async Task<string> ReadContentAsStringAsync(this HttpRequestMessage request)
-        {
-            var content = await request.Content.ReadAsStringAsync();
-            request.Content = new StringContent(content, Encoding.UTF8, "application/json");
-            return content;
-        }
-
         public static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetSpecialHeaders(this HttpRequestMessage request)
         {
-            return request.Headers.Where(x => !_commonRequestHeaders.Contains(x.Key, StringComparer.OrdinalIgnoreCase));
+            return request.Headers.Where(x => !x.Key.StartsWith("x-", StringComparison.OrdinalIgnoreCase) && !_commonRequestHeaders.Contains(x.Key, StringComparer.OrdinalIgnoreCase));
         }
 
         public static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetSpecialHeaders(this HttpResponseMessage response)
@@ -39,11 +32,21 @@ namespace System.Net.Http
 
             if (request.Content.IsStringContent())
             {
-                var json = await request.ReadContentAsStringAsync();
-                message += json;
+                var content = await request.ReadContentAsStringAsync();
+                message += content;
             }
 
             return message;
+        }
+
+        public static async Task<string> ReadContentAsStringAsync(this HttpRequestMessage request)
+        {
+            var content = await request.Content.ReadAsStringAsync();
+            request.Content = new StringContent(
+                content,
+                Encoding.GetEncoding(request.Content.Headers.ContentType.CharSet ?? Encoding.UTF8.WebName),
+                request.Content.Headers.ContentType.MediaType);
+            return content;
         }
 
         public static async Task<string> GetLogMessageAsync(this HttpResponseMessage response)
@@ -55,8 +58,8 @@ namespace System.Net.Http
 
             if (response.Content.IsStringContent())
             {
-                var json = await response.Content.ReadAsStringAsync();
-                message += json;
+                var content = await response.Content.ReadAsStringAsync();
+                message += content;
             }
 
             return message;
