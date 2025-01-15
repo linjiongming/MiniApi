@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace System.Net.Http
 {
@@ -19,19 +17,14 @@ namespace System.Net.Http
 
         public static async Task<string> ReadContentAsStringAsync(this HttpRequestMessage request)
         {
-            var stream = new MemoryStream();
-            {
-                var context = (HttpContextBase)request.Properties["MS_HttpContext"];
-                context.Request.InputStream.Seek(0, SeekOrigin.Begin);
-                await context.Request.InputStream.CopyToAsync(stream);
-                string requestBody = Encoding.UTF8.GetString(stream.ToArray());
-                return requestBody;
-            }
+            var content = await request.Content.ReadAsStringAsync();
+            request.Content = new StringContent(content, Encoding.UTF8, "application/json");
+            return content;
         }
 
         public static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetSpecialHeaders(this HttpRequestMessage request)
         {
-            return request.Headers.Where(x => !x.Key.StartsWith("x-", StringComparison.OrdinalIgnoreCase) && !_commonRequestHeaders.Contains(x.Key, StringComparer.OrdinalIgnoreCase));
+            return request.Headers.Where(x => !_commonRequestHeaders.Contains(x.Key, StringComparer.OrdinalIgnoreCase));
         }
 
         public static IEnumerable<KeyValuePair<string, IEnumerable<string>>> GetSpecialHeaders(this HttpResponseMessage response)
