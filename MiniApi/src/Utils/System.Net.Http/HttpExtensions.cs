@@ -10,7 +10,8 @@ namespace System.Net.Http
     {
         public static bool IsStringContent(this HttpContent content)
         {
-            return content.Headers.ContentType != null &&
+            return content != null &&
+                content.Headers.ContentType != null &&
                 (content.Headers.ContentType.MediaType.Equals("application/json", StringComparison.OrdinalIgnoreCase) ||
                 content.Headers.ContentType.MediaType.StartsWith("text", StringComparison.OrdinalIgnoreCase));
         }
